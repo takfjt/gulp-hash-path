@@ -1,41 +1,28 @@
-# grunt-md5filename
-[![NPM version](https://badge.fury.io/js/grunt-md5filename.png)](http://badge.fury.io/js/grunt-md5filename)
-[![Build Status](https://travis-ci.org/ishikawam/grunt-md5filename.png?branch=master)](https://travis-ci.org/ishikawam/grunt-md5filename)
-[![Dependency Status](https://gemnasium.com/ishikawam/grunt-md5filename.png)](https://gemnasium.com/ishikawam/grunt-md5filename)
-[![endorse](https://api.coderwall.com/m_ishikawa/endorsecount.png)](https://coderwall.com/m_ishikawa)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ishikawam/grunt-md5filename/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+# gulp-md5filename
+
+This forked from [grunt-md5filename](https://github.com/ishikawam/grunt-md5filename)
 
 > ファイル名をMD5に変換して保存します
   
 > ex.) octocat.png -> c29b1fd35e7e51210f3264d567650ac7
 
+## インストール
 
-## 始め方
-このプラグインは Grunt `~0.4.0` が必要です。
+NPMでインストールし、depDependenciesに追加します:
 
-もし [Grunt](http://gruntjs.com/) をまだ使っていなければ [Getting Started](http://gruntjs.com/getting-started) をチェックして下さい。
-このガイドではインストール、 [Gruntfile](http://gruntjs.com/sample-gruntfile) の作成、Gruntプラグインの使い方などを説明しています。
+`npm install --save-dev gulp-md5filename`
 
-下記コマンドでプラグインをインストールできます:
-
-```shell
-npm install grunt-md5filename --save-dev
-```
-
-プラグインをインストールしたら Gruntfile を JavaScript で下記のように記述して使用します:
+## 使用例
 
 ```js
-grunt.loadNpmTasks('grunt-md5filename');
+var md5filename = require('gulp-md5filename');
+
+gulp.task('scripts', function() {
+    return gulp.src('./img/*.png')
+    .pipe(md5filename())
+    .pipe(gulp.dest('./dist/'));
+});
 ```
-
-*このプラグインは Grunt 0.4.x で動作します。*
-
-
-## MD5filename タスク
-_`grunt md5filename` コマンドでこのタスクを実行します。_
-
-タスクのtargets、files、optionsは Grunt の [Configuring tasks](http://gruntjs.com/configuring-tasks) ガイドに従っても指定出来ます。
  
 ### オプション
 
@@ -87,6 +74,26 @@ MD5変換後のファイル名に元のファイルの拡張子を接尾辞と�
 octcat.png
 -> md5(octcat.png) + '.png'
 c29b1fd35e7e51210f3264d567650ac7.png
+```
+
+#### keepDirectoryLevel
+Type: `Number`
+Default: `0`
+
+ディレクトリ構造を指定されたレベルだけ付加します
+
+```
+img/github/octocat.png
+->  'img/' + md5('img/github/octocat.png'), keepDirectoryLevel = 1
+img/ea8bfe94d1b4278fcd9dca963dde3e00
+
+img/github/octocat.png
+->  'img/' + md5('img/github/octocat.png'), keepDirectoryLevel = 2
+img/github/ea8bfe94d1b4278fcd9dca963dde3e00
+
+img/github/octocat.png
+->  'img/' + md5('img/github/octocat.png'), keepDirectoryLevel = 3
+img/github/ea8bfe94d1b4278fcd9dca963dde3e00
 ```
 
 #### saltPrefix
@@ -153,50 +160,4 @@ octcat.png
 ->  md5('octcat.png'), hashLength = 8
 c29b1fd3
 ```
-
-#### debug
-Type: `Boolean`
-Default: `false`
-
-変換の詳細を表示します
-
-```
-File 'original/img/github/octocat.png' to 'htdocs/img/github/c29b1fd35e7e51210f3264d567650ac7.png' created.
-...
-```
-
-### 使用例
-
-```js
-md5filename: {
-  build: {
-    options: {
-      keepBasename: false, // デフォルトfalseでは(MD5ファイル名.jpg) trueでは(元のファイル名-MD5ファイル名.jpg)
-      keepExtension: true, // デフォルトfalseでは拡張子を排除 trueでは元の拡張子を付与
-      pathType: 'filename', // MD5元は filename ファイル名, filepath 相対パス
-      hashFile: 'tmp/hash.json', // ハッシュマップjsonファイルを保存
-      hashLength: 20,
-      debug: true, // 元ファイル、保存ファイルを表示
-    },
-    expand: true, // ディレクトリ構成を保つかどうか
-    cwd: 'original/img/thumbnails/', // expand:true の場合のベースパス
-    src: ['**/*.{png,jpg}'], // 元のファイル
-    dest: 'htdocs/img/thumbnails/', // 保存先ディレクトリ
-  },
-}
-```
-
-
-## リリース履歴
-
- * 2014-03-28   v0.1.5   `hashFile` オプション使用時に生成されるjsonファイルに記載されるMD5返還後ファイルパスを、Gruntルートディレクトリからのパスに仕様変更しました。
- * 2013-12-13   v0.1.4   `ignorePatterns` オプションを追加.
- * 2013-08-25   v0.1.3   `hashLength` オプションを追加.
- * 2013-06-18   v0.1.2   `hashFile`に保存するファイルのパスの基準を変更
- * 2013-06-18   v0.1.1   `hashFile`オプションをサポート
- * 2013-06-13   v0.1.0   リリース
-
----
-
-Task submitted by [Masayuki Ishikawa](https://github.com/ishikawam)
 

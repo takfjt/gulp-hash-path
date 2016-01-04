@@ -1,45 +1,29 @@
 {
-  "name": "grunt-md5filename",
-  "description": "Convert file names to MD5.",
-  "homepage": "https://github.com/ishikawam/grunt-md5filename",
-  "author": "Masayuki Ishikawa (http://github.com/ishikawam)",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/ishikawam/grunt-md5filename.git"
-  },
-  "bugs": {
-    "url": "https://github.com/ishikawam/grunt-md5filename/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/ishikawam/grunt-md5filename/blob/master/LICENSE-MIT"
-    }
-  ],
-  "main": "Gruntfile.js",
-  "version": "0.1.5",
-  "engines": {
-    "node": ">=0.8.0"
-  },
+  "name": "gulp-md5filename",
+  "version": "1.0.0",
+  "description": "convert filename to MD5",
+  "main": "release/main.js",
   "scripts": {
-    "test": "grunt"
+    "build": "gulp dtsm ts",
+    "test": "gulp dtsm test"
   },
-  "dependencies": {
-    "grunt": "~0.4.0"
-  },
+  "author": "",
+  "license": "MIT",
   "devDependencies": {
-    "grunt": "~0.4.2",
-    "grunt-contrib-jshint": "~0.8.0",
-    "grunt-contrib-nodeunit": "~0.3.2",
-    "grunt-contrib-clean": "~0.5.0"
+    "configstore": "^1.4.0",
+    "got": "^5.3.0",
+    "gulp": "^3.9.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-dtsm": "github:9joneg/gulp-dtsm",
+    "gulp-mocha": "^2.2.0",
+    "gulp-typescript": "^2.10.0",
+    "gulp-util": "^3.0.7",
+    "lodash": "^3.10.1",
+    "through2": "^2.0.0",
+    "typescript": "^1.7.5"
   },
-  "keywords": [
-    "gruntplugin",
-    "MD5"
-  ],
-  "_from": "grunt-md5filename@0.1.5",
   "directories": {
     "test": "test"
   },
-  "license": "MIT"
+  "dependencies": {}
 }

@@ -1,4 +1,3 @@
-/node_modules
-/tmp
-._*
-/npm-debug.log
+typings
+test/**/*.js
+node_modules

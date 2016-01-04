@@ -1,38 +1,28 @@
-# grunt-md5filename
-[![NPM version](https://badge.fury.io/js/grunt-md5filename.png)](http://badge.fury.io/js/grunt-md5filename)
-[![Build Status](https://travis-ci.org/ishikawam/grunt-md5filename.png?branch=master)](https://travis-ci.org/ishikawam/grunt-md5filename)
-[![Dependency Status](https://gemnasium.com/ishikawam/grunt-md5filename.png)](https://gemnasium.com/ishikawam/grunt-md5filename)
-[![endorse](https://api.coderwall.com/m_ishikawa/endorsecount.png)](https://coderwall.com/m_ishikawa)
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ishikawam/grunt-md5filename/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-[![Built with Grunt](https://cdn.gruntjs.com/builtwith.png)](http://gruntjs.com/)
+# gulp-md5filename
+
+This forked from [grunt-md5filename](https://github.com/ishikawam/grunt-md5filename)
 
 > Convert file names to MD5.
 
 > ex.) octocat.png -> c29b1fd35e7e51210f3264d567650ac7
 
+## Installation
 
-## Getting Started
-This plugin requires Grunt `~0.4.0`
+Install package with NPM and add it to your development dependencies:
 
-If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
+`npm install --save-dev gulp-md5filename`
 
-```shell
-npm install grunt-md5filename --save-dev
-```
-
-Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
+## Usage
 
 ```js
-grunt.loadNpmTasks('grunt-md5filename');
+var md5filename = require('gulp-md5filename');
+
+gulp.task('scripts', function() {
+    return gulp.src('./img/*.png')
+    .pipe(md5filename())
+    .pipe(gulp.dest('./dist/'));
+});
 ```
-
-*This plugin was designed to work with Grunt 0.4.x.*
-
-
-## MD5filename task
-_Run this task with the `grunt md5filename` command._
-
-Task targets, files and options may be specified according to the grunt [Configuring tasks](http://gruntjs.com/configuring-tasks) guide.
 
 ### Options
 
@@ -84,6 +74,29 @@ converted file name add to extension.
 octcat.png
 -> md5(octcat.png) + '.png'
 c29b1fd35e7e51210f3264d567650ac7.png
+```
+
+#### keepDirectoryLevel
+Type: `Number`
+Default: `0`
+
+Level of added directory structure.
+
+```
+# keepDirectoryLevel = 1
+img/github/octocat.png
+->  'img/' + md5('img/github/octocat.png')
+img/ea8bfe94d1b4278fcd9dca963dde3e00
+
+# keepDirectoryLevel = 2
+img/github/octocat.png
+->  'img/github/' + md5('img/github/octocat.png')
+img/github/ea8bfe94d1b4278fcd9dca963dde3e00
+
+# keepDirectoryLevel = 3
+img/github/octocat.png
+->  'img/github/' + md5('img/github/octocat.png')
+img/github/ea8bfe94d1b4278fcd9dca963dde3e00
 ```
 
 #### saltPrefix
@@ -150,51 +163,4 @@ octcat.png
 ->  md5('octcat.png'), hashLength = 8
 c29b1fd3
 ```
-
-#### debug
-Type: `Boolean`
-Default: `false`
-
-output debug log.
-
-```
-File 'original/img/github/octocat.png' to 'htdocs/img/github/c29b1fd35e7e51210f3264d567650ac7.png' created.
-...
-…
-```
-
-### Usage Examples
-
-```js
-md5filename: {
-  build: {
-    options: {
-      keepBasename: false,
-      keepExtension: true,
-      pathType: 'filename',
-      hashFile: 'tmp/hash.json',
-      hashLength: 20,
-      debug: true,
-    },
-    expand: true,
-    cwd: 'original/img/thumbnails/',
-    src: ['**/*.{png,jpg}'],
-    dest: 'htdocs/img/thumbnails/',
-  },
-}
-```
-
-
-## Release History
-
- * 2014-03-28   v0.1.5   Json hashmap file specification changes. Dest path changes to Grunt root directory relative path.
- * 2013-12-13   v0.1.4   Add `ignorePatterns` option.
- * 2013-08-25   v0.1.3   Add `hashLength` option.
- * 2013-06-18   v0.1.2   Change `hashFile` path.
- * 2013-06-18   v0.1.1   Support `hashFile` option.
- * 2013-06-13   v0.1.0   Init.
-
----
-
-Task submitted by [Masayuki Ishikawa](https://github.com/ishikawam)
 

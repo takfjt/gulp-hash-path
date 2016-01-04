@@ -1,0 +1,30 @@
+{
+    "compilerOptions": {
+        "module": "umd",
+        "target": "es5",
+        "noImplicitAny": true,
+        "experimentalDecorators": true,
+        "rootDir": "./src",
+        "sourceMap": true,
+        "declaration": true,
+        "listFiles": true,
+        "newLine": "LF",
+        "noEmitOnError": true,
+        "inlineSources": true
+    },
+    "filesGlob": [
+        "./**/*.ts",
+        "./**/*.tsx",
+        "!./**/*.d.ts",
+        "./typings/**/*.d.ts",
+        "!./example/**/*.ts",
+        "!./node_modules/**/*",
+        "./node_modules/typescript/lib/lib.es6.d.ts"
+    ],
+    "exclude": [],
+    "files": [
+        "./src/main.ts",
+        "./typings/bundle.d.ts",
+        "./node_modules/typescript/lib/lib.es6.d.ts"
+    ]
+}
