@@ -4,8 +4,8 @@
   "description": "convert filename to MD5",
   "main": "release/main.js",
   "scripts": {
-    "build": "gulp dtsm ts",
-    "test": "gulp dtsm test"
+    "build": "gulp ts",
+    "test": "gulp test"
   },
   "author": "",
   "license": "MIT",
@@ -16,6 +16,7 @@
     "gulp-debug": "^2.1.2",
     "gulp-dtsm": "github:9joneg/gulp-dtsm",
     "gulp-mocha": "^2.2.0",
+    "gulp-tslint": "^4.2.2",
     "gulp-typescript": "^2.10.0",
     "gulp-util": "^3.0.7",
     "lodash": "^3.10.1",

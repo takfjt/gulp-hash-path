@@ -13,7 +13,7 @@ gulp.task('tslint', function () {
   .pipe(tslint())
   .pipe(tslint.report('prose'));
 });
-gulp.task('ts', function () {
+gulp.task('ts', ['dtsm'], function () {
   return tsProject.src()
   .pipe(ts(tsProject)).js
   .pipe(gulp.dest('./release'));
@@ -23,7 +23,7 @@ gulp.task('watch', function () {
   return gulp.watch('./src/main.ts', ['ts']);
 });
 
-gulp.task('test', function () {
+gulp.task('test', ['dtsm'], function () {
   return gulp.src(['./typings/**/*.d.ts', './test/index.ts'])
   .pipe(debug())
   .pipe(ts({
