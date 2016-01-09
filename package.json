@@ -21,6 +21,7 @@
     "gulp-util": "^3.0.7",
     "lodash": "^3.10.1",
     "through2": "^2.0.0",
+    "tslint": "^3.2.1",
     "typescript": "^1.7.5"
   },
   "directories": {
