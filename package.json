@@ -1,7 +1,7 @@
 {
-  "name": "gulp-md5filename",
+  "name": "gulp-hash-path",
   "version": "1.0.0",
-  "description": "convert filename to MD5",
+  "description": "convert path to hash",
   "main": "release/main.js",
   "scripts": {
     "build": "gulp ts",

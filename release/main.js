@@ -11,7 +11,8 @@
     var lodash = require('lodash');
     var path = require('path');
     var crypto = require('crypto');
-    return function plugin(_options) {
+    var exportObj;
+    exportObj = function plugin(_options) {
         var defaultOptions = {
             pathType: 'filename',
             keepBasename: false,
@@ -20,6 +21,7 @@
             ignorePatterns: [],
             saltPrefix: '',
             saltSuffix: '',
+            algorithm: 'sha1',
             hashFile: null,
             hashLength: 32
         };
@@ -29,9 +31,14 @@
             this.emit('warning', new gutil.PluginError('gulp-debug', 'ignore keepDirectoryLevel if keepBasename is true'));
         }
         var options = lodash.defaults(_options || {}, defaultOptions);
-        var hashmap = {};
+        try {
+            crypto.createHash(options.algorithm);
+        }
+        catch (e) {
+            throw new gutil.PluginError('gulp-debug', 'invalid hash algorithm');
+        }
         return through2.obj(function (file, enc, callback) {
-            var srcPath = file.relative;
+            var originalRelative = file.relative;
             if (file.isNull()) {
                 this.push(file);
                 return callback();
@@ -71,27 +78,33 @@
                 }
             });
             if (!isIgnore) {
-                filename = crypto.createHash('md5').update(target, 'utf-8').digest('hex').slice(0, options.hashLength);
+                filename = crypto.createHash(options.algorithm).update(target, 'utf-8').digest('hex').slice(0, options.hashLength);
+                var output = path.join.apply(null, keepedDirArray.concat([basename + filename + ext]));
+                file.path = path.join(file.base, output);
+                file.originalRelative = originalRelative;
             }
-            else {
-                filename = path.basename(file.path);
-            }
-            var output = path.join.apply(null, keepedDirArray.concat([basename + filename + ext]));
-            file.path = path.join(file.base, output);
-            hashmap[srcPath] = file.relative;
             this.push(file);
-            callback(null, file);
-        }, function (callback) {
-            if (options.hashFile) {
-                var json = JSON.stringify(hashmap);
-                var file = new gutil.File({
-                    base: '',
-                    path: options.hashFile,
-                    contents: new Buffer(json)
-                });
-                this.push(file);
-            }
             callback();
         });
     };
+    exportObj.manifest = function manifest(path) {
+        var manifest = {};
+        return through2.obj(function (file, enc, callback) {
+            // black hole
+            if (!lodash.isUndefined(file.originalRelative)) {
+                manifest[file.originalRelative] = file.relative;
+            }
+            callback();
+        }, function (callback) {
+            var json = JSON.stringify(manifest);
+            var file = new gutil.File({
+                base: '',
+                path: path,
+                contents: new Buffer(json)
+            });
+            this.push(file);
+            callback();
+        });
+    };
+    module.exports = exportObj;
 });

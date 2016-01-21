@@ -23,7 +23,7 @@ gulp.task('watch', function () {
   return gulp.watch('./src/main.ts', ['ts']);
 });
 
-gulp.task('test', ['dtsm'], function () {
+gulp.task('test', ['dtsm', 'ts'], function () {
   return gulp.src(['./typings/**/*.d.ts', './test/index.ts'])
   .pipe(debug())
   .pipe(ts({
