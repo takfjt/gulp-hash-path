@@ -13,17 +13,31 @@ interface PluginOptions {
   ignorePatterns?: string[];
   saltPrefix?: string;
   saltSuffix?: string;
+  algorithm?: string;
   hashFile?: string;
   hashLength?: number;
 }
 
 interface File extends gutil.File {
+	originalRelative: string;
   isBuffer(): boolean;
   isStream(): boolean;
   isNull(): boolean;
 }
 
-export = function plugin(_options?: any): NodeJS.ReadWriteStream {
+// from through2.d.ts
+type TransfofmCallback = (err?: any, data?: any) => void;
+type MyFlashCallback = () => void;
+
+export interface ExportObject {
+	(_options?: any): NodeJS.ReadWriteStream;
+	manifest?: {
+		(_options?: any): NodeJS.ReadWriteStream;
+	}
+}
+
+let exportObj: ExportObject;
+exportObj = function plugin(_options?: any): NodeJS.ReadWriteStream {
   const defaultOptions: PluginOptions = {
     pathType: 'filename',
     keepBasename: false,
@@ -32,6 +46,7 @@ export = function plugin(_options?: any): NodeJS.ReadWriteStream {
     ignorePatterns: [],
     saltPrefix: '',
     saltSuffix: '',
+    algorithm: 'sha1',
     hashFile: null,
     hashLength: 32
   };
@@ -41,15 +56,14 @@ export = function plugin(_options?: any): NodeJS.ReadWriteStream {
     this.emit('warning', new gutil.PluginError('gulp-debug', 'ignore keepDirectoryLevel if keepBasename is true'));
   }
   let options = <PluginOptions>lodash.defaults(_options || {}, defaultOptions);
-
-  // from through2.d.ts
-  type TransfofmCallback = (err?: any, data?: any) => void;
-  type MyFlashCallback = () => void;
-
-  let hashmap: {[s: string]: string} = {};
+  try {
+    crypto.createHash(options.algorithm);
+  } catch (e) {
+    throw new gutil.PluginError('gulp-debug', 'invalid hash algorithm');
+  }
 
   return through2.obj(function (file: File, enc: string, callback: TransfofmCallback) {
-    const srcPath = file.relative;
+    const originalRelative = file.relative;
     if (file.isNull()) {
       this.push(file);
       return callback();
@@ -97,30 +111,39 @@ export = function plugin(_options?: any): NodeJS.ReadWriteStream {
       }
     });
     if (!isIgnore) {
-      filename = crypto.createHash('md5').update(target, 'utf-8').digest('hex').slice(0, options.hashLength);
-    } else {
-      filename = path.basename(file.path);
+      filename = crypto.createHash(options.algorithm).update(target, 'utf-8').digest('hex').slice(0, options.hashLength);
+
+			const output = path.join.apply(null, keepedDirArray.concat([basename + filename + ext]));
+
+			file.path = path.join(file.base, output);
+			file.originalRelative = originalRelative;
     }
 
-    const output = path.join.apply(null, keepedDirArray.concat([basename + filename + ext]));
-
-    file.path = path.join(file.base, output);
-
-    hashmap[srcPath] = file.relative;
     this.push(file);
 
-    callback(null, file);
-  }, function (callback: MyFlashCallback) {
-    if (options.hashFile) {
-      const json = JSON.stringify(hashmap);
-      let file = new gutil.File({
-        base: '',
-        path: options.hashFile,
-        contents: new Buffer(json)
-      });
-      this.push(file);
-    }
     callback();
   });
 };
 
+exportObj.manifest = function manifest(path: string): NodeJS.ReadWriteStream {
+  let manifest: {[s: string]: string} = {};
+
+  return through2.obj(function (file: File, enc: string, callback: TransfofmCallback) {
+    // black hole
+    if (!lodash.isUndefined(file.originalRelative)) {
+        manifest[file.originalRelative] = file.relative;
+    }
+    callback();
+  }, function (callback: MyFlashCallback) {
+    const json = JSON.stringify(manifest);
+    let file = new gutil.File({
+      base: '',
+      path: path,
+      contents: new Buffer(json)
+    });
+    this.push(file);
+    callback();
+  });
+};
+
+module.exports = exportObj;
