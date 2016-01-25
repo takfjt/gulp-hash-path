@@ -1,4 +1,4 @@
-# gulp-hash-path
+# gulp-hash-path [![Build Status](https://travis-ci.org/takfjt/gulp-hash-path.svg?branch=master)](https://travis-ci.org/takfjt/gulp-hash-path)
 
 This forked from [grunt-md5filename](https://github.com/ishikawam/grunt-md5filename)
 
