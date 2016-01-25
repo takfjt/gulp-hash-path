@@ -16,7 +16,7 @@ gulp.task('tslint', function () {
 gulp.task('ts', ['dtsm'], function () {
   return tsProject.src()
   .pipe(ts(tsProject)).js
-  .pipe(gulp.dest('./release'));
+  .pipe(gulp.dest('./'));
 });
 
 gulp.task('watch', function () {
