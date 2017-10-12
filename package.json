@@ -1,45 +1,46 @@
 {
   "name": "gulp-hash-path",
   "description": "convert path to hash",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "license": "MIT",
   "repository": "takfjt/gulp-hash-path",
   "author": "Takahiro Fujita <takfjt@gmail.com>",
   "engines": {
-      "node": ">=0.10.0"
+    "node": ">=0.10.0"
   },
   "scripts": {
     "build": "gulp ts",
     "test": "gulp test"
   },
   "files": [
-      "index.js"
+    "index.js"
   ],
   "keywords": [
-      "gulpplugin",
-      "hash",
-      "path",
-      "filename",
-      "convert"
+    "gulpplugin",
+    "hash",
+    "path",
+    "filename",
+    "convert"
   ],
   "devDependencies": {
-    "configstore": "^1.4.0",
-    "got": "^5.3.0",
-    "gulp": "^3.9.0",
-    "gulp-debug": "^2.1.2",
+    "configstore": "^3.1.1",
+    "got": "^7.1.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-debug": "^3.1.0",
     "gulp-dtsm": "github:9joneg/gulp-dtsm",
-    "gulp-mocha": "^2.2.0",
-    "gulp-tslint": "^4.2.2",
-    "gulp-typescript": "^2.10.0",
-    "lodash": "^3.10.1",
-    "tslint": "^3.2.1",
-    "typescript": "^1.7.5"
+    "gulp-mocha": "^4.3.1",
+    "gulp-tslint": "^8.1.2",
+    "gulp-typescript": "^3.2.2",
+    "lodash": "^4.17.4",
+    "tslint": "^5.7.0",
+    "typescript": "^2.5.3"
   },
   "directories": {
     "test": "test"
   },
   "dependencies": {
-    "through2": "^2.0.0",
-    "gulp-util": "^3.0.7"
+    "gulp-util": "^3.0.8",
+    "through2": "^2.0.3"
   }
 }

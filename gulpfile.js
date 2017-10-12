@@ -4,6 +4,7 @@ var tslint = require('gulp-tslint');
 var mocha = require('gulp-mocha');
 var debug = require('gulp-debug');
 var dtsm = require('gulp-dtsm');
+var concat = require('gulp-concat');
 
 var tsProject = ts.createProject('./tsconfig.json');
 
@@ -15,7 +16,8 @@ gulp.task('tslint', function () {
 });
 gulp.task('ts', ['dtsm'], function () {
   return tsProject.src()
-  .pipe(ts(tsProject)).js
+  .pipe(tsProject()).js
+  .pipe(concat('index.js'))
   .pipe(gulp.dest('./'));
 });
 

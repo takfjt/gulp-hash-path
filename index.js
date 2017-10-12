@@ -1,16 +1,19 @@
 (function (factory) {
-    if (typeof module === 'object' && typeof module.exports === 'object') {
-        var v = factory(require, exports); if (v !== undefined) module.exports = v;
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
     }
-    else if (typeof define === 'function' && define.amd) {
-        define(["require", "exports", 'through2', 'gulp-util', 'lodash', 'path', 'crypto'], factory);
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "through2", "gulp-util", "lodash", "path", "crypto"], factory);
     }
 })(function (require, exports) {
-    var through2 = require('through2');
-    var gutil = require('gulp-util');
-    var lodash = require('lodash');
-    var path = require('path');
-    var crypto = require('crypto');
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var through2 = require("through2");
+    var gutil = require("gulp-util");
+    var lodash = require("lodash");
+    var path = require("path");
+    var crypto = require("crypto");
     var exportObj;
     exportObj = function plugin(_options) {
         var defaultOptions = {
